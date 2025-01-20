@@ -30,17 +30,17 @@ class Router: RouterProtocol {
 
     func initialViewController() {
         if let navigationController = navigationController {
-            guard let detailViewController = assemblyBuilder?.createMainModule()
+            guard let mainViewController = assemblyBuilder?.createMainModule(router: self)
             else { return }
-            navigationController.pushViewController(detailViewController, animated: true)
+            navigationController.viewControllers = [mainViewController]
         }
     }
 
     func showDetail(comment: Comment?) {
         if let navigationController = navigationController {
-            guard let mainViewController = assemblyBuilder?.createDetailModule(comment: comment)
+            guard let detailViewController = assemblyBuilder?.createDetailModule(comment: comment, router: self)
             else { return }
-            navigationController.viewControllers = [mainViewController]
+            navigationController.pushViewController(detailViewController, animated: true)
         }
     }
 

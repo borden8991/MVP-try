@@ -9,44 +9,29 @@ import XCTest
 @testable import MVP_Try
 
 class MockView: MainViewProtocol {
-    var titleTest: String?
-    func setGreeting(greeting: String) {
-        self.titleTest = greeting
+    func success() {
+    }
+    
+    func failure(error: any Error) {
     }
 }
 
 final class MainPresenterTest: XCTestCase {
 
     var view: MockView!
-    var person: Comment!
+    var networkService: NetworkServiceProtocol!
     var presenter: MainPresenter!
+    var router: RouterProtocol!
+    var comments = [Comment]()
 
-    override func setUpWithError() throws {
-        view = MockView()
-        person = Comment(firstName: "Baz", lastName: "Bar")
-        presenter = MainPresenter(view: view, person: person)
-    }
-
-    override func tearDownWithError() throws {
+    override func tearDown() {
         view = nil
-        person = nil
+        networkService = nil
         presenter = nil
     }
 
-    func testModuleIsNotNil() {
-        XCTAssertNotNil(view, "View is not nil")
-        XCTAssertNotNil(person, "Person is not nil")
-        XCTAssertNotNil(presenter, "Presenter is not nil")
-    }
-
-    func testView() {
-        presenter.showGreeting()
-        XCTAssertEqual(view.titleTest, "Baz Bar")
-    }
-
-    func testPersonModel() {
-        XCTAssertEqual(person.firstName, "Baz")
-        XCTAssertEqual(person.lastName, "Bar")
+    func testGetSuccesComments() {
+        
     }
 
 }

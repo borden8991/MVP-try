@@ -16,33 +16,38 @@ protocol MainViewProtocol: AnyObject {
 }
 
 protocol MainViewPresenterProtocol: AnyObject {
-    init(view: MainViewProtocol, networkService: NetworkServiceProtocol)
-
+    init(view: MainViewProtocol, networkService: NetworkServiceProtocol, router: RouterProtocol)
 
     /// Создаёт комментарии.
-func getComments()
-
-
+    func getComments()
     /// <#Description#>
     var comments: [Comment]? { get set }
+
+    func tapOnTheComment(comment: Comment?)
 }
 
 class MainPresenter: MainViewPresenterProtocol {
+    
     var comments: [Comment]?
+    var router: RouterProtocol?
     weak private var view: MainViewProtocol?
     private let networkService: NetworkServiceProtocol?
 
 
-    required init(view: MainViewProtocol, networkService: NetworkServiceProtocol) {
+    required init(view: MainViewProtocol, networkService: NetworkServiceProtocol, router: RouterProtocol) {
         self.view = view
         self.networkService = networkService
+        self.router = router
         getComments()
     }
 
-    func getComments() {
-        networkService?.getComments { [weak self] result in
-//            guard let self = self else { return }
+    func tapOnTheComment(comment: Comment?) {
+        router?.showDetail(comment: comment)
+    }
 
+    func getComments() {
+
+        networkService?.getComments { [weak self] result in
             guard let self else { return }
             DispatchQueue.main.async {
                 switch result {
@@ -56,4 +61,11 @@ class MainPresenter: MainViewPresenterProtocol {
         }
     }
 
+    enum screenState {
+        case loading
+
+        case loaded([Comment])
+
+        case error
+    }
 }

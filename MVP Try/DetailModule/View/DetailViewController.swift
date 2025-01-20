@@ -20,6 +20,15 @@ class DetailViewController: UIViewController {
         return label
     }()
 
+private let popButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Pop", for: .normal)
+        button.setTitleColor(.blue, for: .normal)
+        button.addTarget(self, action: #selector(tapAction(_:)), for: .touchUpInside)
+        return button
+    }()
+
     var presenter: DetailViewPresenterProtocol?
 
     func createLabelConstraints() {
@@ -31,11 +40,24 @@ class DetailViewController: UIViewController {
         ])
     }
 
+    func createButtonConstraints() {
+        NSLayoutConstraint.activate([
+            popButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+            popButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -60)
+        ])
+    }
+
+    @objc func tapAction(_ sender: Any) {
+        presenter?.tap()
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(mainLabel)
+        view.addSubview(popButton)
         presenter?.setComment()
         createLabelConstraints()
+        createButtonConstraints()
     }
 
 }
@@ -43,7 +65,7 @@ class DetailViewController: UIViewController {
 extension DetailViewController: DetailViewProtocol {
 
     func setComment(comment: Comment?) {
-        mainLabel.text = comment?.body
+        mainLabel.text = comment?.email
     }
     
 }

@@ -15,24 +15,33 @@ protocol DetailViewProtocol: class {
 protocol DetailViewPresenterProtocol: class {
     init(view: DetailViewProtocol,
          networkService: NetworkServiceProtocol,
+         router: RouterProtocol,
          comment: Comment?)
-func setComment()
+    func setComment()
+    func tap()
 }
 
 class DetailPresenter: DetailViewPresenterProtocol {
 
     weak var view: DetailViewProtocol?
+    var router: RouterProtocol
     let networkService: NetworkServiceProtocol?
     var comment: Comment?
 
-    required init(view: any DetailViewProtocol, networkService: any NetworkServiceProtocol, comment: Comment?) {
+    required init(view: any DetailViewProtocol, networkService: any NetworkServiceProtocol, router: RouterProtocol, comment: Comment?) {
         self.view = view
         self.networkService = networkService
         self.comment = comment
+        self.router = router
     }
     
-    func setComment() {
+    public func setComment() {
         self.view?.setComment(comment: comment)
     }
+
+    func tap() {
+        router.popToRoot()
+    }
+
 }
 

@@ -8,23 +8,23 @@
 import UIKit
 
 protocol AsselderBuilderProtocol {
-    func createMainModule() -> UIViewController
-    func createDetailModule(comment: Comment?) -> UIViewController
+    func createMainModule(router: RouterProtocol) -> UIViewController
+    func createDetailModule(comment: Comment?, router: RouterProtocol) -> UIViewController
 }
 
 class ModuleBuilder: AsselderBuilderProtocol {
-    func createDetailModule(comment: Comment?) -> UIViewController {
+    func createDetailModule(comment: Comment?, router: RouterProtocol) -> UIViewController {
         let view = DetailViewController()
         let networkService = NetworkService()
-        let presenter = DetailPresenter(view: view, networkService: networkService, comment: comment)
+        let presenter = DetailPresenter(view: view, networkService: networkService, router: router, comment: comment)
         view.presenter = presenter
         return view
     }
 
-    func createMainModule() -> UIViewController {
+    func createMainModule(router: RouterProtocol) -> UIViewController {
         let view = MainViewController()
         let networkService = NetworkService()
-        let presenter = MainPresenter(view: view, networkService: networkService)
+        let presenter = MainPresenter(view: view, networkService: networkService, router: router)
         view.presenter = presenter
         return view
     }

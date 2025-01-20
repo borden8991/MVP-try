@@ -98,15 +98,14 @@ extension MainViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         let comment = presenter?.comments?[indexPath.row]
 
-        cell.textLabel?.text = comment?.body
+        cell.textLabel?.text = comment?.email
         return cell
     }}
 
 extension MainViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let coment = presenter?.comments?[indexPath.row]
-        let detailViewController = ModuleBuilder.createDetailModule(comment: coment)
-        navigationController?.pushViewController(detailViewController, animated: true)
+        presenter?.tapOnTheComment(comment: coment)
     }
 }
 

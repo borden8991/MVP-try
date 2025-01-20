@@ -12,6 +12,7 @@ protocol NetworkServiceProtocol {
 }
 
 class NetworkService: NetworkServiceProtocol {
+    // повторить escaping 
     func getComments(completion: @escaping (Result<[Comment], any Error>) -> Void) {
         let urlString = "https://jsonplaceholder.typicode.com/comments"
         guard let url = URL(string: urlString) else { return }
@@ -30,6 +31,4 @@ class NetworkService: NetworkServiceProtocol {
             }
         }.resume()
     }
-
-
 }
